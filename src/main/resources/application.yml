@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: blog-api
+  datasource:
+    url: jdbc:h2:mem:testdb
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+aws:
+  region: ${AWS_DEFAULT_REGION}
+  services:
+    dynamodb:
+      uri: ${DYNAMO_DB_URI}
+      key: ${DYNAMO_DB_KEY}
+      secret: ${DYNAMO_DB_SECRET}
+    s3:
+      upload:
+        baseLocation: ${S3_LOCATION} #blog-posts.csv
+

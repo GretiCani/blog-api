@@ -7,7 +7,6 @@ import org.springframework.batch.item.ItemProcessor
 class BlogPostProcessor : ItemProcessor<BlogPost, Post> {
 
     override fun process(item: BlogPost): Post {
-        val output: Post = Post(title= item.title,friendlyUrl = item.friendlyUrl, content = item.content, createdBy = "BATCH")
-        return output
+        return Post(title= item.title,friendlyUrl = item.friendlyUrl, content = item.content, createdBy = "BATCH")
     }
 }

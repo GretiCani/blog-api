@@ -1,6 +1,5 @@
 package com.blog.service.impl
 
-import org.slf4j.LoggerFactory
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.JobParametersBuilder
 import org.springframework.batch.core.launch.JobLauncher
@@ -14,11 +13,6 @@ class BatchService(
     @Autowired private val jobLauncher: JobLauncher,
     @Autowired private val blogJob: Job
 ) {
-
-    companion object {
-        val logger = LoggerFactory.getLogger(BatchService::class.java)
-    }
-
     @Value("\${aws.services.s3.upload.baseLocation}")
     lateinit var baseLocation: String
 

@@ -7,7 +7,6 @@ spring:
     console:
       enabled: true
       path: /h2-console
-
 aws:
   region: ${AWS_DEFAULT_REGION}
   services:
@@ -18,4 +17,9 @@ aws:
     s3:
       upload:
         baseLocation: ${S3_LOCATION} #blog-posts.csv
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info,health
+    enabled-by-default: true

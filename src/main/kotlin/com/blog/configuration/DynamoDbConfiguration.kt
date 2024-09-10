@@ -18,6 +18,9 @@ class DynamoDbConfiguration : AWSConfiguration() {
     @Value("\${aws.services.dynamodb.uri}")
     lateinit var dynamoDbUri: String
 
+    @Value("\${aws.services.dynamodb.blogTable}")
+    lateinit var tableName: String
+
     @Bean
     fun dynamoDbClient(): DynamoDbEnhancedClient{
         val uri =URI.create(dynamoDbUri)
@@ -32,7 +35,8 @@ class DynamoDbConfiguration : AWSConfiguration() {
 
     @Bean
     fun blogPostsTable(): DynamoDbTable<Post>{
-        return dynamoDbClient().table("blog_posts",TableSchema.fromBean(Post::class.java))
+        print("table name ${tableName}")
+        return dynamoDbClient().table(tableName,TableSchema.fromBean(Post::class.java))
     }
 
 }

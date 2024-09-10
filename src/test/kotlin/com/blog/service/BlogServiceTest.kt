@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers.*
 
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation
 import org.springframework.http.MediaType
+import org.springframework.security.test.context.support.WithUserDetails
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -33,9 +34,8 @@ class BlogServiceTest {
     @TestMethodOrder(OrderAnnotation::class)
     inner class FindAllBlogsTest {
         @Test
-        @DisplayName("When findAll is called with defaults then return page with default size 5")
         @Order(1)
-        fun test_find_all_default(){
+        fun `When findAll is called with defaults then return page with default size 5`(){
             val resp =mockMvc.perform(get("/v1/api/blogs")).andDo(print())
                 .andExpect(status().isOk)
                 .andExpectAll(
@@ -47,9 +47,8 @@ class BlogServiceTest {
         }
 
         @Test
-        @DisplayName("When findAll is called with limit=10 and lastEvalKey then return required page with size 10")
         @Order(2)
-        fun test_find_all_with_pagination(){
+        fun `When findAll is called with limit=10 and lastEvalKey then return required page with size 10`(){
             mockMvc.perform(get("/v1/api/blogs?limit={limit}&lastEvalKey={lastEvalKey}",10,lastEvaluatedKey)).andDo(print())
                 .andExpect(status().isOk)
                 .andExpectAll(
@@ -65,9 +64,9 @@ class BlogServiceTest {
     @DisplayName("Should create blog post. POST: /v1/api/blogs")
     inner class CreateBlogTest {
 
+        @WithUserDetails("admin")
         @Test
-        @DisplayName("When BlogPost.friendlyUrl is unique then create BlogPost ")
-        fun test_create_blog() {
+        fun `When BlogPost friendlyUrl is unique then create BlogPost`() {
             val post = BlogPost(title = "Title", friendlyUrl = "friendlyUrl", content = "content")
             val resp = mockMvc.perform(
                 post("/v1/api/blogs").accept(MediaType.APPLICATION_JSON)
@@ -84,9 +83,9 @@ class BlogServiceTest {
             postIdCreated = JsonPath.parse(resp.response.contentAsString).read<String>("$.id")
         }
 
+        @WithUserDetails("admin")
         @Test
-        @DisplayName("When BlogPost.friendlyUrl is not unique then return BAD_REQUEST")
-        fun test_create_blog_with_non_unique_friendlyUrl() {
+        fun `When BlogPost friendlyUrl is not unique then return BAD_REQUEST`() {
             val post = BlogPost(title = "Title", friendlyUrl = "friendlyUrl", content = "content")
             mockMvc.perform(
                 post("/v1/api/blogs").accept(MediaType.APPLICATION_JSON)
@@ -103,9 +102,9 @@ class BlogServiceTest {
         @DisplayName("Should update blog post for a given id. PUT: /v1/api/blogs/{id}")
         inner class UpdateBlogTest {
 
+            @WithUserDetails("admin")
             @Test
-            @DisplayName("When BlogPost.id exist then update BlogPost with given values")
-            fun test_create_blog() {
+            fun `When BlogPost id exist then update BlogPost with given values`() {
                 val post =
                     BlogPost(title = "Title updated", friendlyUrl = "friendlyUrl updated", content = "content updated")
                 mockMvc.perform(
@@ -121,9 +120,9 @@ class BlogServiceTest {
                     ).andReturn()
             }
 
+            @WithUserDetails("admin")
             @Test
-            @DisplayName("When BlogPost.id does not exist then return BAD_REQUEST")
-            fun test_create_blog_with_not_existing_id() {
+            fun `When BlogPost id does not exist then return BAD_REQUEST`() {
                 val post =
                     BlogPost(title = "Title updated", friendlyUrl = "friendlyUrl updated", content = "content updated")
                 mockMvc.perform(
@@ -142,6 +141,7 @@ class BlogServiceTest {
         @DisplayName("Should delete blog post by id. DELETE: /v1/api/blogs/{id}")
         inner class DeleteBlogTest {
 
+            @WithUserDetails("admin")
             @Test
             @DisplayName("When BlogPost.id does exist then delete blog post by id")
             fun test_delete_blog() {
@@ -149,6 +149,7 @@ class BlogServiceTest {
                     .andDo(print()).andExpect(status().isOk)
             }
 
+            @WithUserDetails("admin")
             @Test
             @DisplayName("When BlogPost.id does not exist then then return BAD_REQUEST")
             fun test_delete_blog_not_existing_id() {

@@ -22,6 +22,7 @@ class RestConfig(val loggingInterceptor: LogInterceptor) : WebMvcConfigurer {
     fun securityFilter(http : HttpSecurity): SecurityFilterChain {
         http.csrf{csrf -> csrf.disable()}
             .authorizeHttpRequests{auth -> auth.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
+                .requestMatchers("/actuator/**").permitAll()
                 .requestMatchers(HttpMethod.GET,"v1/api/blogs/**").permitAll()
             .anyRequest().hasAuthority("ROLE_ADMIN")
         }.httpBasic(Customizer.withDefaults())
@@ -35,7 +36,7 @@ class RestConfig(val loggingInterceptor: LogInterceptor) : WebMvcConfigurer {
             .components( Components()
                 .addSecuritySchemes("basicScheme",
                      SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("basic")))
-            .addSecurityItem( SecurityRequirement().addList("basicScheme"))
+                        .addSecurityItem( SecurityRequirement().addList("basicScheme"))
     }
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(loggingInterceptor)

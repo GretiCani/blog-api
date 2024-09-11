@@ -1,6 +1,7 @@
 package com.blog.controller
 
 import com.blog.service.impl.BatchService
+import io.swagger.v3.oas.annotations.Hidden
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
+@Hidden
 @RestController
 @RequestMapping("/batch")
 class BatchController(@Autowired private val batchService: BatchService)

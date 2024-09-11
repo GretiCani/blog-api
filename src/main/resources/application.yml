@@ -7,13 +7,6 @@ spring:
     console:
       enabled: true
       path: /h2-console
-  security:
-    user:
-      name: admin
-      password: admin
-      roles: ADMIN
-
-
 aws:
   region: ${AWS_DEFAULT_REGION}
   services:
@@ -35,5 +28,4 @@ management:
 logging:
   level:
     org:
-      springframework:
-        security: INFO
+      springframework: INFO
